@@ -64,8 +64,11 @@ const saveJSON = (filePath, note) => {
 // adding note as form of json
 const addJsonNote = (title, body, filePath) => {
     const notes = loadJSON(filePath);
-    const duplicateNote = notes.filter( (note) => note.title===title );
-    if(duplicateNote.length > 0) {
+    // filter function return an array containing the note if the condition is satisified. 
+    const duplicateNotes = notes.filter( (note) => note.title===title );
+    // find returns undefined if we could not able to find the things in array, else returns true.
+    const duplodateNote = notes.find ( (note) => note.title === title );
+    if(duplicateNotes.length > 0) {
         console.log('Title already exists')
     } else {
         notes.push({

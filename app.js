@@ -121,6 +121,13 @@ yargs.command({
 yargs.parse();
 
 
-
+// Inorder to debug the node program
+// Basic execution
+// node app.js deleteJsonNote --filepath='Notes.json' --title='Note 1'
+// put debugger some where in the code.
+// node inspect app.js deleteJsonNote --filePath='Notes.json' --title='Note 1' (or)
+// node --inspect-brk app.js deleteJsonNote --filePath='Notes.json' --title='Note 1'
+// chrome://inspect
+// in debugger> restart to recompile same command.
 
 
