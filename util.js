@@ -9,7 +9,7 @@ const write = function (filePath, content) {
     // Check for file existence
     if(fs.existsSync(filePath, content)) {
         fs.appendFileSync(filePath, content);
-        console.log("File already exists, new contents appended!");
+        console.log("File already exists, new contents being appended!");
     } else {
         fs.writeFileSync(filePath, content);
         console.log("New file created and added new notes!");
@@ -39,9 +39,77 @@ const list = function (dirPath) {
     })
 }
 
+//working with json for notes
 
-//exports
-module.exports.read = read;
-module.exports.write = write;
-module.exports.remove = remove;
-module.exports.list = list;
+// loading the file from json - helper funtion
+const loadJSON = function (filePath) {
+    try {
+        const fileBuffer = fs.readFileSync(filePath).toString();
+        return JSON.parse(fileBuffer);
+    } catch (err) {
+        console.error('No such file in the directory.');
+        return [];
+    }
+}
+
+// saving the file as JSON - helper function
+const saveJSON = function (filePath, note) {
+    // stringify the json object and write to file.
+    if(fs.existsSync(filePath)) {
+        fs.appendFileSync(filePath,JSON.stringify(note))
+    }
+    fs.writeFileSync(filePath, JSON.stringify(note));
+}
+
+// adding note as form of json
+const addJsonNote = function (title, body, filePath) {
+    const notes = loadJSON(filePath);
+    const duplicateNote = notes.filter( (note) => note.title===title );
+    if(duplicateNote.length > 0) {
+        console.log('Title already exists')
+    } else {
+        notes.push({
+            title: title,
+            body: body
+        });
+        saveJSON(filePath, notes);
+    }
+}
+
+// removing the json note mentioned title
+const deleteJsonNote = function (title, filePath) {
+    const notes = loadJSON(filePath);
+    if(notes.length > 0) {
+        try {
+            const keepNotes = notes.filter( (note) => note.title !== title );
+            if(keepNotes.length < notes.length) {
+                saveJSON(filePath, keepNotes);
+                console.log('Notes removed')
+            }
+        }
+        catch (err) {
+            console.log(err);
+            console.log('no such title exists');
+        }
+    }
+}
+
+
+// basic way of exporting the functions
+// module.exports.read = read;
+// module.exports.write = write;
+// module.exports.remove = remove;
+// module.exports.list = list;
+
+// Clean way to export the functions
+module.exports = {
+    read: read,
+    write: write,
+    remove: remove,
+    list: list,
+    addJsonNote: addJsonNote,
+    deleteJsonNote: deleteJsonNote,
+}
+
+// inroder to handle the error in app js file
+// throw the error in here in catch statement. - Error Bubbling

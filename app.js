@@ -1,5 +1,6 @@
 const utils = require('./util');
 const yargs = require('yargs');
+const chalk = require('chalk');
 
 // Update the version of node package
 // yargs.version('1.1.0');
@@ -69,6 +70,51 @@ yargs.command({
     }
 });
 
+// json notes add
+yargs.command({
+    command: 'addJsonNote',
+    describe: 'Appends the notes are json format in .json file',
+    builder: {
+        title: {
+            description: 'Title goes here',
+            demandOption: true,
+            type: 'string'
+        },
+        body: {
+            description: 'Notes content goes here',
+            demandOption: true,
+            type: 'string'
+        },
+        filePath: {
+            description: 'Path of json file.',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: (argv) => {
+        utils.addJsonNote(argv.title, argv.body, argv.filePath);
+    }
+})
+// remove
+yargs.command({
+    command: 'deleteJsonNote',
+    describe: 'Deletes the notes are json file given title',
+    builder: {
+        title: {
+            description: 'mention title of note to be deleted',
+            demandOption: true,
+            type: 'string'
+        },
+        filePath: {
+            description: 'Path of json file.',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: (argv) => {
+        utils.deleteJsonNote(argv.title, argv.filePath);
+    }
+})
 
 // This line seems to be mandatory for yargs to pick up the commands
 // console.log(yargs.argv);
