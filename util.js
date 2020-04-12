@@ -1,11 +1,11 @@
 const fs = require('fs');
 
 // Read file
-const read = function (filePath) {
+const read = (filePath) => {
     console.log(fs.readFileSync(filePath).toString());
 }
 // Write file (create new file if the file doesnt exist and write the contents)
-const write = function (filePath, content) {
+const write = (filePath, content) => {
     // Check for file existence
     if(fs.existsSync(filePath, content)) {
         fs.appendFileSync(filePath, content);
@@ -17,7 +17,7 @@ const write = function (filePath, content) {
 }
 
 // Delete a file mentioned path
-const remove  = function (filePath) {
+const remove  = (filePath) => {
     if(fs.existsSync(filePath)) {
         fs.unlinkSync(filePath)
         console.log("File successfully deleted!")
@@ -27,7 +27,7 @@ const remove  = function (filePath) {
 }
 
 // List all the files in the directory
-const list = function (dirPath) {
+const list = (dirPath) => {
     fs.readdir(dirPath, (err,files) => {
         if(err) {
             console.log('Unable to read contents in the directory ' + err);
@@ -42,7 +42,7 @@ const list = function (dirPath) {
 //working with json for notes
 
 // loading the file from json - helper funtion
-const loadJSON = function (filePath) {
+const loadJSON = (filePath) => {
     try {
         const fileBuffer = fs.readFileSync(filePath).toString();
         return JSON.parse(fileBuffer);
@@ -53,7 +53,7 @@ const loadJSON = function (filePath) {
 }
 
 // saving the file as JSON - helper function
-const saveJSON = function (filePath, note) {
+const saveJSON = (filePath, note) => {
     // stringify the json object and write to file.
     if(fs.existsSync(filePath)) {
         fs.appendFileSync(filePath,JSON.stringify(note))
@@ -62,7 +62,7 @@ const saveJSON = function (filePath, note) {
 }
 
 // adding note as form of json
-const addJsonNote = function (title, body, filePath) {
+const addJsonNote = (title, body, filePath) => {
     const notes = loadJSON(filePath);
     const duplicateNote = notes.filter( (note) => note.title===title );
     if(duplicateNote.length > 0) {
@@ -77,7 +77,7 @@ const addJsonNote = function (title, body, filePath) {
 }
 
 // removing the json note mentioned title
-const deleteJsonNote = function (title, filePath) {
+const deleteJsonNote = (title, filePath) => {
     const notes = loadJSON(filePath);
     if(notes.length > 0) {
         try {

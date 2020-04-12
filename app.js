@@ -35,7 +35,7 @@ yargs.command({
             type: 'string'
         }
     },
-    handler: function(argv) {
+    handler: (argv) => {
         utils.remove(argv.filePath);
     }
 });
